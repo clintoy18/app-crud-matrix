@@ -22,15 +22,21 @@ class NoteController extends Controller
             'content' => 'required|string'
         ]);
 
-        Note::create($request->only('title','content'));
+        Note::create($request->only('title','content','category'));
 
         return redirect()->route('notes.index');
     }
     
+    
 
     public function update(Request $request, Note $note)
     {
+        $request->validate([
+            'category' => 'required|in:Work,Personal,Study,Other',
+        ]);
+
         $note->update([
+            'category' => $request->category,
             'is_important' => !$note->is_important
         ]);
         return redirect()->route('notes.index');
