@@ -11,6 +11,8 @@ import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
     name: string;
+    fname: string;
+    lname:string;
     email: string;
     role: "regular" | "admin" | "upcycler"; 
     password: string;
@@ -20,6 +22,8 @@ type RegisterForm = {
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
         name: '',
+        fname:'',
+        lname:'',
         email: '',
         role:'regular',
         password: '',
@@ -38,6 +42,42 @@ export default function Register() {
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
+                    
+                     {/* First Name Field */}
+                     <div className="grid gap-2">
+                        <Label htmlFor="fname">First Name</Label>
+                        <Input
+                            id="fname"
+                            type="text"
+                            required
+                            autoFocus
+                            tabIndex={1}
+                            autoComplete="fname"
+                            value={data.fname}
+                            onChange={(e) => setData('fname', e.target.value)}
+                            disabled={processing}
+                            placeholder="First name"
+                        />
+                        <InputError message={errors.fname} className="mt-2" />
+                    </div>
+
+                    {/* Last Name Field */}
+                    <div className="grid gap-2">
+                        <Label htmlFor="name">Last Name</Label>
+                        <Input
+                            id="name"
+                            type="text"
+                            required
+                            autoFocus
+                            tabIndex={1}
+                            autoComplete="lname"
+                            value={data.lname}
+                            onChange={(e) => setData('lname', e.target.value)}
+                            disabled={processing}
+                            placeholder="Last name"
+                        />
+                        <InputError message={errors.lname} className="mt-2" />
+                    </div>
                     <div className="grid gap-2">
                         <Label htmlFor="name">Name</Label>
                         <Input
@@ -47,7 +87,7 @@ export default function Register() {
                             autoFocus
                             tabIndex={1}
                             autoComplete="name"
-                            value={data.name}
+                            value={data.fname + " " + data.lname}
                             onChange={(e) => setData('name', e.target.value)}
                             disabled={processing}
                             placeholder="Full name"
