@@ -9,9 +9,31 @@ use Inertia\Inertia;
 
 class NoteController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        $query = Note::query();
+
+        if($search = $request->input('search')){
+            $query->where(function ($q) use ($search){
+                $q->where('title','like',"%{$search}%")
+                ->orWhere('content','like',"%{$search}%");
+            });
+        }
+
+        // apply category filter
+        if($category = $request->input('category')){
+            $query->where('category', $category);
+        }
+
+        //get results , order by newest 
+        $notes= $query->latest() -> get();
+
+        // pass the filters back as proprs so the front end can use them
         return Inertia::render('Notes/Index', [
-            'notes' => Note::latest()->get() ?? []
+            'notes' => $notes,
+            'filters' =>[
+                'search' => $search,
+                'category' => $category,
+            ]
         ]);
     }
 

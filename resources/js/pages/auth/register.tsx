@@ -12,6 +12,7 @@ import AuthLayout from '@/layouts/auth-layout';
 type RegisterForm = {
     name: string;
     email: string;
+    role: "regular" | "admin" | "upcycler"; 
     password: string;
     password_confirmation: string;
 };
@@ -20,6 +21,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
         name: '',
         email: '',
+        role:'regular',
         password: '',
         password_confirmation: '',
     });
@@ -67,7 +69,26 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
+                        
                     </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="role">Role</Label>
+                        <select
+                            id="role"
+                            value={data.role}
+                            onChange={(e) => {
+                                console.log("Selected role:", e.target.value);
+                                setData("role", e.target.value as "regular" | "upcycler");
+                            }}
+                            className="border border-gray-900 p-2 rounded"
+                            >
+                            <option value="regular">Regular User</option>
+                            <option value="upcycler">Upcycler</option>
+                            </select>
+
+                        <InputError message={errors.email} />
+                 </div>
+
 
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
