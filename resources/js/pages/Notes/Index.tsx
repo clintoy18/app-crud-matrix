@@ -48,7 +48,6 @@ export default function Notes({ notes,filters }: NoteListProps) {
         );
     };
 
-
     const addNote = (e: React.FormEvent) => {
         e.preventDefault();
         router.post(route("notes.store"), { title ,content,category});
